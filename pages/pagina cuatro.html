@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pagina 4</title>
+    <style>
+        /*Importamos fuente o tipografia de google fonts */
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700;800;900&display=swap");
+
+        * {
+            font-family: 'Poppins';
+        }
+
+        body {
+            margin: 0;
+            background-color: #041c2c;
+            text-align: center;
+
+        }
+
+        h1 {
+            background-color: #0b349a;
+            margin-top: 2em;
+            padding: 2em;
+            font-family: Poppins;
+            text-align: center;
+            color: white;
+        }
+
+        .inicio,
+        .inicio a {
+
+            color: #badcec;
+            margin-top: 20px;
+            font-size: 20px;
+
+        }
+
+        .canciones {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            position: relative;
+            width: 300px;
+            height: 400px;
+
+        }
+
+
+        .artista {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            background: linear-gradient(to top, #0b349a, Transparent);
+        }
+
+        .artista h2 {
+
+            color: white;
+        }
+
+        .card img {
+
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .Play {
+            background-color: white;
+            color: #041c2c;
+            border-radius: 100%;
+            font-weight: bold;
+            padding: 20px;
+            text-decoration: none;
+
+
+        }
+
+        .Play:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .reproductor {
+          
+            margin-top: 30px;
+
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .reproductor img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 100%;
+            border: 4px solid #0b349a;
+            
+        }
+
+        .reproductor.rotar img{
+            animation: Rotar 2s ease infinite;
+        }
+
+
+
+        .reproductor audio {
+            width: 400px;
+        }
+
+        /* Animacion para rotar la imagen */
+        @keyframes Rotar{
+            from{
+                transform: rotate(0deg);
+            }
+
+            to{
+                transform: rotate(360deg);
+            }
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <div class="inicio">
+        <a href="../pages/pagina uno.html"> Ir a Inicio</a>
+    </div>
+
+
+
+    <h1>Escucha tus caciones favoritas</h1>
+
+    <!--Lista de canciones-->
+
+    <div class="canciones">
+
+        <!--Cancion 1 -->
+
+        <div class="card">
+            <img class="img" src="../media/img/selena.jpg" alt="">
+            <div class="artista">
+                <a href="#" class="Play" data-src="../media/music/selena.mp3">Play</a>
+                <h2>Selena Gomez</h2>
+            </div>
+        </div>
+
+        <!--Cancion 2 -->
+
+        <div class="card">
+            <img class="img" src="../media/img/one direction.jpg" alt="">
+            <div class="artista">
+                <a href="#" class="Play" data-src="../media/music/One Direction.mp3">Play</a>
+                <h2>One Direction</h2>
+            </div>
+        </div>
+
+
+        <!--Cancion 3 -->
+
+        <div class="card">
+            <img class="img" src="../media/img/maluma.jpg" alt="">
+            <div class="artista">
+                <a href="#" class="Play" data-src="../media/music/Maluma.mp3">Play</a>
+                <h2>Maluma - sobrio</h2>
+            </div>
+        </div>
+
+        <!--Cancion 4 -->
+
+        <div class="card">
+            <img class="img" src="../media/img/lauren daigle.jpg" alt="">
+            <div class="artista">
+                <a href="#" class="Play" data-src="../media/music/Lauren Daigle.mp3">Play</a>
+                <h2>Lauren Daigle</h2>
+            </div>
+        </div>
+
+
+
+        <!--Cancion 5 -->
+
+
+      
+        
+
+    </div>
+
+
+    <!--Reproductor de audio-->
+    <div class="reproductor" id="reproductor">
+        
+
+    </div>
+
+
+
+
+    
+
+    <script>
+
+        /*Codigo para reproucir las canciones y saltar a la siguiente automaticamente*/
+
+        var cancionActual;
+        var Plays = document.querySelectorAll('.Play');
+        var Imgs = document.querySelectorAll('.img');
+
+        var Img1 = Imgs[0].src;
+        var audio1 = Plays[0].dataset['src'];
+
+
+        Play(audio1, Img1, 0,false);
+
+
+        Plays.forEach((play, index) => {
+
+            play.addEventListener('click', async (e) => {
+                e.preventDefault();
+                var audio = await play.dataset['src'];
+
+                Play(audio, Imgs[index].src, index,true);
+
+            })
+        });
+
+        async function Play(src, img, index,autoplay) {
+
+            var reproductor = document.getElementById('reproductor');
+            reproductor.innerHTML = "";
+
+            var imagen = document.createElement("img");
+            var audio = document.createElement("audio");
+            
+            imagen.id="reproImg";
+            
+            audio.autoplay = autoplay;
+
+            audio.id = "reproAudio";
+
+            audio.controls = "controls";
+
+            imagen.src = await img;
+            audio.src = src;
+
+            reproductor.appendChild(imagen);
+            reproductor.appendChild(audio);
+
+
+            audio.addEventListener("ended", async () => {
+
+                cancionActual = index + 1;
+
+                if (cancionActual > Plays.length - 1) {
+                    cancionActual = 0;
+                }
+
+
+                var cancion = await Plays[cancionActual].dataset['src'];
+                var portada = await Imgs[cancionActual].src;
+  
+                Play(cancion, portada, cancionActual,true);
+
+            });
+
+            audio.addEventListener("play",()=>{
+              reproductor.classList.add('rotar');
+            });
+
+            audio.addEventListener("pause",()=>{
+               reproductor.classList.remove('rotar');
+            });
+
+         
+
+        }
+    </script>
+</body>
+
+</html>
